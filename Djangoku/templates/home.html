@@ -1,8 +1,412 @@
 <!DOCTYPE html>
-<html>
-<head><title>Home</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <style>
+    :root {
+      --bg-1: #020617;
+      --bg-2: #111827;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --primary: #22d3ee;
+      --secondary: #a78bfa;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(34, 211, 238, 0.2), transparent 35%),
+        radial-gradient(circle at 90% 5%, rgba(167, 139, 250, 0.2), transparent 35%),
+        linear-gradient(140deg, var(--bg-1), var(--bg-2));
+      padding: 2rem 1rem;
+    }
+
+    .page {
+      width: min(1000px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .hero {
+      width: min(920px, 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      animation: fadeUp 700ms ease-out both, floatCard 7s ease-in-out 1s infinite;
+    }
+
+    .pill {
+      display: inline-block;
+      border: 1px solid rgba(34, 211, 238, 0.5);
+      color: #67e8f9;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      animation: pulseGlow 2.8s ease-in-out infinite;
+    }
+
+    h1 {
+      margin: 0;
+      line-height: 1.1;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      animation: fadeUp 720ms ease-out 80ms both;
+    }
+
+    .gradient {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.12rem);
+      max-width: 62ch;
+      line-height: 1.65;
+      animation: fadeUp 720ms ease-out 150ms both;
+    }
+
+    .actions {
+      margin-top: 1.7rem;
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      animation: fadeUp 740ms ease-out 220ms both;
+    }
+
+    .btn {
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 0.8rem 1.05rem;
+      transition: transform 0.12s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      color: #001018;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 10px 24px rgba(34, 211, 238, 0.3);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(2, 6, 23, 0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .stats {
+      margin-top: 1.7rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .stat-card {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.55);
+      border-radius: 14px;
+      padding: 0.9rem;
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+      animation: fadeUp 760ms ease-out both;
+    }
+
+    .stat-card:nth-child(1) {
+      animation-delay: 260ms;
+    }
+
+    .stat-card:nth-child(2) {
+      animation-delay: 340ms;
+    }
+
+    .stat-card:nth-child(3) {
+      animation-delay: 420ms;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(34, 211, 238, 0.5);
+      box-shadow: 0 10px 24px rgba(34, 211, 238, 0.16);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-card span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .brands {
+      width: min(920px, 100%);
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 18px;
+      padding: 1rem 0;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 780ms ease-out 360ms both;
+    }
+
+    .brands::before,
+    .brands::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 90px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .brands::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 0));
+    }
+
+    .brands::after {
+      right: 0;
+      background: linear-gradient(to left, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 0));
+    }
+
+    .brands-label {
+      margin: 0 1.2rem 0.9rem;
+      font-size: clamp(0.95rem, 2vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #22d3ee, #a78bfa, #fb7185, #facc15);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 200% 200%;
+      animation: gradientShift 7s ease infinite;
+    }
+
+    .marquee {
+      display: flex;
+      width: max-content;
+      animation: slide 26s linear infinite;
+      will-change: transform;
+    }
+
+    .brand-chip {
+      margin-right: 0.65rem;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(167, 139, 250, 0.2));
+      color: #f8fafc;
+      border-radius: 999px;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.92rem;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25);
+      transition: transform 180ms ease, background 200ms ease, box-shadow 200ms ease;
+    }
+
+    .brand-cocacola {
+      background: linear-gradient(135deg, rgba(244, 0, 0, 0.34), rgba(185, 0, 0, 0.22));
+      border-color: rgba(244, 0, 0, 0.6);
+    }
+
+    .brand-netflix {
+      background: linear-gradient(135deg, rgba(229, 9, 20, 0.34), rgba(122, 0, 10, 0.22));
+      border-color: rgba(229, 9, 20, 0.6);
+    }
+
+    .brand-spotify {
+      background: linear-gradient(135deg, rgba(30, 215, 96, 0.34), rgba(17, 125, 58, 0.22));
+      border-color: rgba(30, 215, 96, 0.58);
+    }
+
+    .brand-amazon {
+      background: linear-gradient(135deg, rgba(255, 153, 0, 0.34), rgba(200, 112, 0, 0.22));
+      border-color: rgba(255, 153, 0, 0.58);
+    }
+
+    .brand-apple {
+      background: linear-gradient(135deg, rgba(156, 163, 175, 0.34), rgba(107, 114, 128, 0.22));
+      border-color: rgba(209, 213, 219, 0.52);
+    }
+
+    .brand-google {
+      background: linear-gradient(135deg, rgba(66, 133, 244, 0.32), rgba(234, 67, 53, 0.24));
+      border-color: rgba(66, 133, 244, 0.55);
+    }
+
+    .brand-microsoft {
+      background: linear-gradient(135deg, rgba(127, 186, 0, 0.3), rgba(0, 164, 239, 0.24));
+      border-color: rgba(127, 186, 0, 0.52);
+    }
+
+    .brand-meta {
+      background: linear-gradient(135deg, rgba(4, 117, 244, 0.34), rgba(7, 59, 179, 0.22));
+      border-color: rgba(4, 117, 244, 0.56);
+    }
+
+    .brand-logo {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      filter: none;
+    }
+
+    .brand-chip:hover {
+      transform: translateY(-2px) scale(1.02);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.32), rgba(251, 113, 133, 0.3));
+      box-shadow: 0 12px 24px rgba(34, 211, 238, 0.2);
+    }
+
+    @keyframes slide {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.22);
+      }
+      50% {
+        box-shadow: 0 0 0 8px rgba(34, 211, 238, 0);
+      }
+    }
+
+    @keyframes floatCard {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .brands::before,
+      .brands::after {
+        width: 40px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
 <body>
-  <h1>Welcome!</h1>
-  <a href="/item/new/">Create a Post</a>
+  <main class="page">
+    <section class="hero">
+      <span class="pill">Emerging Trends</span>
+      <h1>Turn your ideas into <span class="gradient">beautiful posts</span>.</h1>
+      <p class="subtitle">
+        Welcome to your publishing hub. Create content quickly, upload images, and share stories that stand out.
+      </p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="/item/new/">✍️ Create a Post</a>
+        <a class="btn btn-secondary" href="/about/">Learn More</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <strong>Fast</strong>
+          <span>Write and publish in seconds</span>
+        </div>
+        <div class="stat-card">
+          <strong>Visual</strong>
+          <span>Add images to every post</span>
+        </div>
+        <div class="stat-card">
+          <strong>Simple</strong>
+          <span>Clean, distraction-free flow</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="brands" aria-label="Brands using this platform">
+      <p class="brands-label">Loved by creators from</p>
+      <div class="marquee">
+        <span class="brand-chip brand-cocacola"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/cocacola.svg" alt="Coca-Cola logo" loading="lazy">Coca-Cola</span>
+        <span class="brand-chip brand-netflix"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/netflix.svg" alt="Netflix logo" loading="lazy">Netflix</span>
+        <span class="brand-chip brand-spotify"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/spotify.svg" alt="Spotify logo" loading="lazy">Spotify</span>
+        <span class="brand-chip brand-amazon"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazon.svg" alt="Amazon logo" loading="lazy">Amazon</span>
+        <span class="brand-chip brand-apple"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg" alt="Apple logo" loading="lazy">Apple</span>
+        <span class="brand-chip brand-google"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/google.svg" alt="Google logo" loading="lazy">Google</span>
+        <span class="brand-chip brand-microsoft"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoft.svg" alt="Microsoft logo" loading="lazy">Microsoft</span>
+        <span class="brand-chip brand-meta"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/meta.svg" alt="Meta logo" loading="lazy">Meta</span>
+        <span class="brand-chip brand-cocacola"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/cocacola.svg" alt="Coca-Cola logo" loading="lazy">Coca-Cola</span>
+        <span class="brand-chip brand-netflix"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/netflix.svg" alt="Netflix logo" loading="lazy">Netflix</span>
+        <span class="brand-chip brand-spotify"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/spotify.svg" alt="Spotify logo" loading="lazy">Spotify</span>
+        <span class="brand-chip brand-amazon"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazon.svg" alt="Amazon logo" loading="lazy">Amazon</span>
+        <span class="brand-chip brand-apple"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg" alt="Apple logo" loading="lazy">Apple</span>
+        <span class="brand-chip brand-google"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/google.svg" alt="Google logo" loading="lazy">Google</span>
+        <span class="brand-chip brand-microsoft"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoft.svg" alt="Microsoft logo" loading="lazy">Microsoft</span>
+        <span class="brand-chip brand-meta"><img class="brand-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/meta.svg" alt="Meta logo" loading="lazy">Meta</span>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
